@@ -1,7 +1,11 @@
+using Weather.Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+var services = builder.Services;
+
+services.AddControllersWithViews();
+services.AddScoped<DocumentService>();
 
 var app = builder.Build();
 

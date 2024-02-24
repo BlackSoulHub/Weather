@@ -1,26 +1,25 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Weather.Web.Models;
+using Weather.Web.Services;
 
 namespace Weather.Web.Controllers;
 
-public class HomeController : Controller
+public class HomeController(DocumentService documentService) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
+    [HttpGet]
     public IActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    [HttpGet("test")]
+    public async Task<IActionResult> TestDocs()
     {
-        return View();
+        var path = Path.Combine("DOCS", "moskva_2010.xlsx");
+        await using var file = System.IO.File.Open(path, FileMode.Open);
+        var data = documentService.ParseDocument(file);
+        return Ok(data);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
