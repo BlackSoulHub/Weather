@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Weather.Web.DbContext;
 using Weather.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 services.AddControllersWithViews();
+services.AddDbContext<ApplicationDbContext>(opt =>
+{
+    opt.UseSqlite("Data Source=c:database.db");
+});
+
 services.AddScoped<DocumentService>();
 
 var app = builder.Build();

@@ -1,0 +1,77 @@
+@using Weather.Web.Requests
+@model Weather.Web.Models.Home.WatchViewModel
+
+@{
+    ViewBag.Title = "Просмотр архивов";
+    Layout = "_Layout";
+}
+
+<h2>Просмотр архивов</h2>
+<div class="container">
+    <div>
+        <h3>
+            Фильтр:
+        </h3>
+        <form method="get" action="/watch">
+            <p>Найдено @Model.PageCount страниц</p>
+            <label for="month">Выберите месяц</label>
+            <select name="month" id="month" value>
+                @{
+                    for (int month = 1; month <= 12; month++)
+                    {
+                        var selected = month == Model.Filter.Month;
+                        <option value="@month" selected="@selected">@month</option>
+                    }
+                }
+            </select>
+            <label for="year">Выберите год</label>
+            <select name="year" id="year">
+                @{
+                    foreach (var year in Model.AvailableYears)
+                    {
+                        var selected = year == Model.Filter.Year;
+                        <option value="@year" selected="@selected">@year</option>
+                    }
+                }
+            </select>
+            <button type="submit">Отфильтровать</button>
+        </form>
+        <div>
+            <h4>Записи:</h4>
+            <div>
+                @foreach (var weatherRecord in Model.Items)
+                {
+                    <div style="text-align: justify">
+                        Время: @weatherRecord.DateTime
+                        Температура: @weatherRecord.Temperature *C
+                        Погодные условия: @weatherRecord.WeatherEvent
+                    </div>
+                }
+            </div>
+            <div>
+                @{
+                    if (Model.HasPrevPage)
+                    {
+                        @Html.RouteLink("Педыдущая страница", new WatchRequest
+                        {
+                            Page = Model.Filter.Page - 1,
+                            Year = Model.Filter.Year,
+                            Month = Model.Filter.Month
+                        })
+
+                    }
+
+                    if (Model.HasNextPage)
+                    {
+                        @Html.RouteLink("Следующая страница", new WatchRequest
+                        {
+                            Page = Model.Filter.Page + 1,
+                            Year = Model.Filter.Year,
+                            Month = Model.Filter.Month
+                        })
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

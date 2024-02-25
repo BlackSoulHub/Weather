@@ -1,0 +1,15 @@
+@model dynamic
+
+@{
+    ViewBag.Title = "Загрузка архивов";
+    Layout = "_Layout";
+}
+
+<h2>Загрузка архивов</h2>
+<div class="container">
+    <form enctype="multipart/form-data" method="post" action="/upload">
+        <label for="files">Загрузите файлы:</label>
+        <input id="files" name="files" type="file" multiple/>
+        <button type="submit">Отправить</button>
+    </form>
+</div>
