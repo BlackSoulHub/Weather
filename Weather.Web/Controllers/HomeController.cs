@@ -94,6 +94,8 @@ public class HomeController(ApplicationDbContext dbContext, DocumentService docu
         await dbContext.Records.AddRangeAsync(result);
         await dbContext.SaveChangesAsync();
         
+        memoryCache.Remove(AvailableYearsCacheKey);
+        
         return Ok($"Загружено всего {result.Count} записей");
     }
 
